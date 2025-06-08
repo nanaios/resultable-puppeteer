@@ -1,0 +1,23 @@
+{
+	"name": "resultable-puppeteer",
+	"version": "0.1.0",
+	"description": "NeverThrowライブラリを用いたPuppeteerのライブラリ",
+	"license": "MIT",
+	"author": "nanaios",
+	"type": "module",
+	"main": "index.js",
+	"directories": {
+		"test": "test"
+	},
+	"scripts": {
+		"test": "vitest"
+	},
+	"devDependencies": {
+		"esbuild": "^0.25.5",
+		"vitest": "^3.2.2"
+	},
+	"dependencies": {
+		"neverthrow": "^8.2.0",
+		"puppeteer": "^24.10.0"
+	}
+}

@@ -1,0 +1,1 @@
+import { ResultablePage } from "./ResultablePage";
