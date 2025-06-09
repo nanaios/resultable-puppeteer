@@ -11,4 +11,6 @@ describe("utility.tsのテスト", () => {
 		expect(NotFalsy("").isErr()).toBe(true)
 		expect(NotFalsy(null).isErr()).toBe(true)
 	})
+	test("メソッドのテスト", () => {
+	})
 })
