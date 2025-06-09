@@ -1,9 +1,9 @@
-import type { Page } from "puppeteer";
+import type { ElementHandle, Page } from "puppeteer";
 import { describe, expect, test, vi } from "vitest";
 import { ResultablePage } from "../src/ResultablePage";
 
 describe("ResultablePageのテスト", () => {
-	test("prototypeの継承の検証", async () => {
+	test("pageのメソッドと関数の合成の検証", async () => {
 		//pageをmockする
 		const page = {
 			async title() { return "test title" }
@@ -13,7 +13,7 @@ describe("ResultablePageのテスト", () => {
 		//prototypeからメソッドを参照できるかチェック
 		expect(await resultablePage.title()).toBe("test title")
 	})
-	/* test("overrideした関数の検証", async () => {
+	test("overrideした関数の検証", async () => {
 		const mockElements = [{}, {}] as unknown as ElementHandle<HTMLElement>[]
 		const mockInnerText = ["inner1", "inner2"]
 		const $mock = vi.fn(async (selector: string) => mockElements[0])
@@ -29,14 +29,6 @@ describe("ResultablePageのテスト", () => {
 		} as unknown as Page
 
 		const resultablePage = new ResultablePage(page)
-
-		//@ts-ignore
-		//resultablePage.__proto__ = page
-
-		//@ts-ignore
-		console.log(resultablePage.$ === ResultablePage.prototype.$)
-
-
 
 		//overrideした関数を実行
 		const result1 = await resultablePage.$("li.selector1")
@@ -58,11 +50,10 @@ describe("ResultablePageのテスト", () => {
 		if (result3.isErr()) return;
 		if (result4.isErr()) return;
 
-		/**
 
 		expect(result1.value)
 		expect(result2.value)
 		expect(result3.value)
-		expect(result4.value) 
-	})*/
+		expect(result4.value)
+	})
 })

@@ -11,7 +11,11 @@ export interface ResultablePage extends Page {
 		Params extends unknown[],
 		Func extends EvaluateFuncWith<NodeFor<Selector>, Params> = EvaluateFuncWith<NodeFor<Selector>, Params>
 	>(selector: Selector, pageFunction: string | Func, ...args: Params): ResultAsync<Awaited<ReturnType<Func>>, FailedEvalError>
-
+	$$eval<
+		Selector extends string,
+		Params extends unknown[],
+		Func extends EvaluateFuncWith<NodeFor<Selector>[], Params> = EvaluateFuncWith<NodeFor<Selector>[], Params>
+	>(selector: Selector, pageFunction: string | Func, ...args: Params): ResultAsync<Awaited<ReturnType<Func>>, FailedEvalError>
 }
 
 interface ResultablePageConstructor {
