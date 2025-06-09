@@ -36,14 +36,11 @@ describe("ResultablePageのテスト", () => {
 		const result3 = await resultablePage.$eval("li.selector3", li => li.innerText)
 		const result4 = await resultablePage.$$eval("li.selector4", lis => lis.map(li => li.innerText))
 
-
-
 		//resultの成否のチェック
 		expect(result1.isOk()).toBe(true)
 		expect(result2.isOk()).toBe(true)
 		expect(result3.isOk()).toBe(true)
 		expect(result4.isOk()).toBe(true)
-
 
 		if (result1.isErr()) return;
 		if (result2.isErr()) return;
@@ -51,9 +48,12 @@ describe("ResultablePageのテスト", () => {
 		if (result4.isErr()) return;
 
 
-		expect(result1.value)
-		expect(result2.value)
-		expect(result3.value)
-		expect(result4.value)
+		expect(result1.value).toBe(mockElements[0])
+		expect(result2.value).toBe(mockElements)
+		expect(result3.value).toBe(mockInnerText[0])
+		expect(result4.value).toBe(mockInnerText)
+	})
+	test("overrideした関数の検証（異常系）", () => {
+
 	})
 })
