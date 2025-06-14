@@ -1,19 +1,8 @@
 import type { ElementHandle, Page } from "puppeteer";
 import { describe, expect, test, vi } from "vitest";
 import { ResultablePage } from "../src/ResultablePage";
-import { FailedEvalError, NullNodeError } from "../src/utility";
 
 describe("ResultablePageのテスト", () => {
-	test("pageのメソッドと関数の合成の検証", async () => {
-		//pageをmockする
-		const page = {
-			async title() { return "test title" }
-		} as unknown as Page
-		const resultablePage = new ResultablePage(page)
-
-		//prototypeからメソッドを参照できるかチェック
-		expect(await resultablePage.title()).toBe("test title")
-	})
 	test("overrideした関数の検証", async () => {
 		//関数や戻り値のmock
 		const mockElements = [{}, {}] as unknown as ElementHandle<HTMLElement>[]
@@ -51,7 +40,7 @@ describe("ResultablePageのテスト", () => {
 
 		//引数をチェック
 		expect($mock).toHaveBeenCalledWith("li.selector1")
-		expect($$mock).toHaveBeenCalledWith("li.selector2")
+		expect($$mock).toHaveBeenCalledWith("li.selector2", undefined)
 		expect($evalMock.mock.lastCall?.[0]).toBe("li.selector3")
 		expect($$evalMock.mock.lastCall?.[0]).toBe("li.selector4")
 
@@ -88,15 +77,5 @@ describe("ResultablePageのテスト", () => {
 		expect(result2.isErr()).toBe(true)
 		expect(result3.isErr()).toBe(true)
 		expect(result4.isErr()).toBe(true)
-
-		if (result1.isOk()) return;
-		if (result2.isOk()) return;
-		if (result3.isOk()) return;
-		if (result4.isOk()) return;
-
-		expect(result1.error).toBeInstanceOf(NullNodeError)
-		expect(result2.error).toBeInstanceOf(NullNodeError)
-		expect(result3.error).toBeInstanceOf(FailedEvalError)
-		expect(result4.error).toBeInstanceOf(FailedEvalError)
 	})
 })

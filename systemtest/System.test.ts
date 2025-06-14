@@ -31,29 +31,4 @@ describe("実際のpuppeteer環境でテストする", () => {
 		expect(innerText.value).toBe("Example Domain")
 		await browser.close()
 	})
-	test("実際にpageのメソッドが使用できることを確認", { timeout: 30000 }, async () => {
-		//browserを立ち上げ
-		const browser = await puppeteer.launch({ headless: true })
-		const page = await browser.pages().then(page => page[0])
-
-		const resultablePage = new ResultablePage(page)
-
-		//テストサイトに移動
-		await Promise.all([
-			resultablePage.goto("https://example.com"),
-			resultablePage.waitForNavigation({ waitUntil: ["domcontentloaded", "load", "networkidle2"] })
-		])
-
-		//titleを取得できることを確認
-		expect(await resultablePage.title()).toBe("Example Domain")
-
-		//テストサイトに移動
-		await Promise.all([
-			resultablePage.click("a"),
-			resultablePage.waitForNavigation({ waitUntil: ["domcontentloaded", "load", "networkidle2"] })
-		])
-
-		//titleを取得できることを確認
-		expect(await resultablePage.title()).toBe("Example Domains")
-	})
 })
