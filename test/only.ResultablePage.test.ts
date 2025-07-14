@@ -1,8 +1,8 @@
 import type { ElementHandle, Page } from "puppeteer";
 import { describe, expect, test, vi } from "vitest";
-import { ResultablePage } from "../src/ResultablePage";
+import { createResultablePage } from "../src/ResultablePage";
 
-describe("ResultablePageのテスト", () => {
+describe("ResultablePageのテスト(only)", () => {
 	test("overrideした関数の検証", async () => {
 		//関数や戻り値のmock
 		const mockElements = [{}, {}] as unknown as ElementHandle<HTMLElement>[]
@@ -19,7 +19,7 @@ describe("ResultablePageのテスト", () => {
 			$$eval: $$evalMock
 		} as unknown as Page
 
-		const resultablePage = new ResultablePage(page)
+		const resultablePage = createResultablePage(page)
 
 		//overrideした関数を実行
 		const result1 = await resultablePage.$("li.selector1")
@@ -45,7 +45,7 @@ describe("ResultablePageのテスト", () => {
 		expect($$evalMock.mock.lastCall?.[0]).toBe("li.selector4")
 
 		//戻り値が正常かチェック
-		expect(result1.value).toBe(mockElements[0])
+		expect(result1.value.element).toBe(mockElements[0])
 		expect(result2.value).toBe(mockElements)
 		expect(result3.value).toBe(mockInnerText[0])
 		expect(result4.value).toBe(mockInnerText)
@@ -64,7 +64,7 @@ describe("ResultablePageのテスト", () => {
 			$$eval: $$evalMock
 		} as unknown as Page
 
-		const resultablePage = new ResultablePage(page)
+		const resultablePage = createResultablePage(page)
 
 		//overrideした関数を実行
 		const result1 = await resultablePage.$("li.selector1")
@@ -77,5 +77,20 @@ describe("ResultablePageのテスト", () => {
 		expect(result2.isErr()).toBe(true)
 		expect(result3.isErr()).toBe(true)
 		expect(result4.isErr()).toBe(true)
+	})
+	test("returnがnullの時のテスト", async () => {
+		const $mock = vi.fn(async (selector: string) => { throw new Error("mock error") })
+
+		const page = {
+			$: $mock
+		} as unknown as Page
+
+		const resultablePage = createResultablePage(page)
+
+		//overrideした関数を実行
+		const result1 = await resultablePage.$("li.selector1")
+
+		//resultの成否のチェック
+		expect(result1.isErr()).toBe(true)
 	})
 })
