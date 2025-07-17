@@ -1,3 +1,5 @@
+import { fromPromise, type ResultAsync } from "neverthrow";
+
 type Falsy = null | undefined | false | 0 | 0n | ""
 
 /**
@@ -11,3 +13,5 @@ export const NotFalsy = <T>(value: T | Falsy) => {
 }
 
 export const ThrowError = (e: unknown) => e as Error
+
+export const bindResult = <T, E extends Error>(promise: PromiseLike<T>, errorFn?: (e: unknown) => E = ThrowError): ResultAsync<T, E> => fromPromise(promise, errorFn)

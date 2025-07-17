@@ -1,9 +1,8 @@
-import { fromPromise, type ResultAsync } from "neverthrow";
+import { type ResultAsync } from "neverthrow";
 import type { ElementHandle, EvaluateFuncWith, NodeFor, Page, QueryOptions } from "puppeteer";
 import { IResultableElementHandle } from "./ResultableElementHandle";
-import { ThrowError, NotFalsy } from "./utility";
+import { NotFalsy, bindResult } from "./utility";
 import { createResultableElementHandle } from "./factory";
-import type { EvaluateFunc } from "puppeteer";
 
 export interface I$Base {
 	$<Selector extends string>(selector: Selector): ResultAsync<IResultableElementHandle<NodeFor<Selector>>, Error>
@@ -30,34 +29,25 @@ export class $Base {
 	}
 
 	$<Selector extends string>(selector: Selector) {
-		return fromPromise(this.base.$(selector), ThrowError)
+		return bindResult(this.base.$(selector))
 			.map(element => NotFalsy(element))
 			.map(element => createResultableElementHandle(element))
 	}
 	$$<Selector extends string>(selector: Selector, options?: QueryOptions) {
-		return fromPromise(
-			this.base.$$(selector, options),
-			ThrowError
-		)
+		return bindResult(this.base.$$(selector, options))
 	}
 	$eval<
 		Selector extends string,
 		Params extends unknown[],
 		Func extends EvaluateFuncWith<NodeFor<Selector>, Params> = EvaluateFuncWith<NodeFor<Selector>, Params>
 	>(selector: Selector, pageFunction: string | Func, ...args: Params) {
-		return fromPromise(
-			this.base.$eval(selector, pageFunction, ...args),
-			ThrowError
-		)
+		return bindResult(this.base.$eval(selector, pageFunction, ...args))
 	}
 	$$eval<
 		Selector extends string,
 		Params extends unknown[],
 		Func extends EvaluateFuncWith<NodeFor<Selector>[], Params> = EvaluateFuncWith<NodeFor<Selector>[], Params>
 	>(selector: Selector, pageFunction: string | Func, ...args: Params) {
-		return fromPromise(
-			this.base.$$eval(selector, pageFunction, ...args),
-			ThrowError
-		)
+		return bindResult(this.base.$$eval(selector, pageFunction, ...args))
 	}
 }
