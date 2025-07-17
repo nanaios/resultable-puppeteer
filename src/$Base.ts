@@ -3,6 +3,7 @@ import type { ElementHandle, EvaluateFuncWith, NodeFor, Page, QueryOptions } fro
 import { IResultableElementHandle } from "./ResultableElementHandle";
 import { ThrowError, NotFalsy } from "./utility";
 import { createResultableElementHandle } from "./factory";
+import type { EvaluateFunc } from "puppeteer";
 
 export interface I$Base {
 	$<Selector extends string>(selector: Selector): ResultAsync<IResultableElementHandle<NodeFor<Selector>>, Error>
@@ -24,6 +25,8 @@ export class $Base {
 	private base: Page | ElementHandle<Node>
 	constructor(base: Page | ElementHandle<Node>) {
 		this.base = base
+
+		base.evaluate
 	}
 
 	$<Selector extends string>(selector: Selector) {

@@ -18,6 +18,8 @@ export class ResultablePage extends $Base implements IResultablePage {
 	constructor(page: Page) {
 		super(page)
 		this.page = page
+
+		page.evaluate
 	}
 	title() {
 		return fromPromise(
