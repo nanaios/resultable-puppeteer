@@ -5,9 +5,9 @@ on:
     # PRが閉じたタイミングで実行
     types:
       - closed
-    # releaseブランチのみを対象とする
+    # mainブランチのみを対象とする
     branches:
-      - release
+      - main
 
 jobs:
   build-and-release:
