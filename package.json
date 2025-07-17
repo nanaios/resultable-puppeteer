@@ -11,7 +11,8 @@
 		"test": "vitest run -t only",
 		"fullTest": "vitest run",
 		"build": "npm run fullTest && node esbuild.js",
-		"fullBuild": "npm run build production& tsc -d -p tsconfig.build.json"
+		"fullBuild": "npm run build production& tsc -d -p tsconfig.build.json",
+		"prepublishOnly": "npm run fullTest"
 	},
 	"devDependencies": {
 		"esbuild": "^0.25.5",
@@ -20,5 +21,17 @@
 	"dependencies": {
 		"neverthrow": "^8.2.0",
 		"puppeteer": "^24.10.0"
+	},
+	"keywords": [
+		"automation",
+		"puppeteer",
+		"chrome"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+"
+	},
+	"publishConfig": {
+		"registry": "https://registry.npmjs.org/"
 	}
 }

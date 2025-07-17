@@ -1,1 +1,40 @@
+name: Create Release Note
 
+on:
+  pull_request:
+    # PRが閉じたタイミングで実行
+    types:
+      - closed
+    # releaseブランチのみを対象とする
+    branches:
+      - release
+
+jobs:
+  build-and-release:
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+        
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: install dependencies
+        run: npm ci
+
+      - name: build dependencies
+        run: npm run build production
+
+      - name: Publish
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
