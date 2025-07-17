@@ -4,7 +4,7 @@ const isProduction = process.argv[2] === "production"
 
 esbuild.build({
 	entryPoints: ["src/index.ts"],
-	outfile: "dist/bin.js",
+	outfile: "lib/index.js",
 	bundle: true,
 	platform: "node",
 	format: "esm",

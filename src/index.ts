@@ -1,1 +1,1 @@
-export { createResultablePage } from "./factory"
+export { createResultablePage, createResultableElementHandle } from "./factory"

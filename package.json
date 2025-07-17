@@ -11,7 +11,9 @@
 	},
 	"scripts": {
 		"test": "vitest -t only",
-		"build": "node esbuild.js"
+		"fullTest": "vitest",
+		"build": "npm run fullTest && node esbuild.js",
+		"fullBuild": "npm run build production& tsc -d -p tsconfig.build.json"
 	},
 	"devDependencies": {
 		"esbuild": "^0.25.5",

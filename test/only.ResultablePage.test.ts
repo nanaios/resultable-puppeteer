@@ -17,6 +17,8 @@ describe("ResultablePageのテスト(only)", () => {
 		$$eval: $$evalMock
 	} as unknown as Page
 
+	const resultablePage = createResultablePage(page)
+
 	test("overrideした関数の検証", async () => {
 		//関数や戻り値のmock
 		const mockElements = [{}, {}] as unknown as ElementHandle<HTMLElement>[]
@@ -26,8 +28,6 @@ describe("ResultablePageのテスト(only)", () => {
 		$$mock.mockImplementation(async (selector: string) => mockElements)
 		$evalMock.mockImplementation(async (selector: string, fn: () => any) => mockInnerText[0])
 		$$evalMock.mockImplementation(async (selector: string, fn: () => any) => mockInnerText)
-
-		const resultablePage = createResultablePage(page)
 
 		//overrideした関数を実行
 		const result1 = await resultablePage.$("li.selector1")
@@ -63,19 +63,10 @@ describe("ResultablePageのテスト(only)", () => {
 	})
 	test("overrideした関数の検証（異常系）", async () => {
 		//関数をmockする
-		const $mock = vi.fn(async (selector: string) => { throw new Error("mock error") })
-		const $$mock = vi.fn(async (selector: string) => { throw new Error("mock error") })
-		const $evalMock = vi.fn(async (selector: string, fn: () => any) => { throw new Error("mock error") })
-		const $$evalMock = vi.fn(async (selector: string, fn: () => any) => { throw new Error("mock error") })
-
-		const page = {
-			$: $mock,
-			$$: $$mock,
-			$eval: $evalMock,
-			$$eval: $$evalMock
-		} as unknown as Page
-
-		const resultablePage = createResultablePage(page)
+		$mock.mockImplementation(async (selector: string) => { throw new Error("mock error") })
+		$$mock.mockImplementation(async (selector: string) => { throw new Error("mock error") })
+		$evalMock.mockImplementation(async (selector: string, fn: () => any) => { throw new Error("mock error") })
+		$$evalMock.mockImplementation(async (selector: string, fn: () => any) => { throw new Error("mock error") })
 
 		//overrideした関数を実行
 		const result1 = await resultablePage.$("li.selector1")
@@ -90,13 +81,8 @@ describe("ResultablePageのテスト(only)", () => {
 		expect(result4.isErr()).toBe(true)
 	})
 	test("returnがnullの時のテスト", async () => {
-		const $mock = vi.fn(async (selector: string) => { throw new Error("mock error") })
-
-		const page = {
-			$: $mock
-		} as unknown as Page
-
-		const resultablePage = createResultablePage(page)
+		//関数をmockする
+		$mock.mockImplementation(async (selector: string) => { throw new Error("mock error") })
 
 		//overrideした関数を実行
 		const result1 = await resultablePage.$("li.selector1")
