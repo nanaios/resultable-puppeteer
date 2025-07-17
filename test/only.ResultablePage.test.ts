@@ -1,23 +1,31 @@
 import type { ElementHandle, Page } from "puppeteer";
 import { describe, expect, test, vi } from "vitest";
-import { createResultablePage } from "../src/ResultablePage";
+import { createResultablePage } from "../src/factory";
+import { ResultableElementHandle } from "../src/ResultableElementHandle";
 
 describe("ResultablePageのテスト(only)", () => {
+
+	const $mock = vi.fn()
+	const $$mock = vi.fn()
+	const $evalMock = vi.fn()
+	const $$evalMock = vi.fn()
+
+	const page = {
+		$: $mock,
+		$$: $$mock,
+		$eval: $evalMock,
+		$$eval: $$evalMock
+	} as unknown as Page
+
 	test("overrideした関数の検証", async () => {
 		//関数や戻り値のmock
 		const mockElements = [{}, {}] as unknown as ElementHandle<HTMLElement>[]
 		const mockInnerText = ["inner1", "inner2"]
-		const $mock = vi.fn(async (selector: string) => mockElements[0])
-		const $$mock = vi.fn(async (selector: string) => mockElements)
-		const $evalMock = vi.fn(async (selector: string, fn: () => any) => mockInnerText[0])
-		const $$evalMock = vi.fn(async (selector: string, fn: () => any) => mockInnerText)
 
-		const page = {
-			$: $mock,
-			$$: $$mock,
-			$eval: $evalMock,
-			$$eval: $$evalMock
-		} as unknown as Page
+		$mock.mockImplementation(async (selector: string) => mockElements[0])
+		$$mock.mockImplementation(async (selector: string) => mockElements)
+		$evalMock.mockImplementation(async (selector: string, fn: () => any) => mockInnerText[0])
+		$$evalMock.mockImplementation(async (selector: string, fn: () => any) => mockInnerText)
 
 		const resultablePage = createResultablePage(page)
 
@@ -44,7 +52,10 @@ describe("ResultablePageのテスト(only)", () => {
 		expect($evalMock.mock.lastCall?.[0]).toBe("li.selector3")
 		expect($$evalMock.mock.lastCall?.[0]).toBe("li.selector4")
 
-		//戻り値が正常かチェック
+		//戻り値の型チェック
+		expect(result1.value).instanceOf(ResultableElementHandle)
+
+		//戻り値の値チェック
 		expect(result1.value.element).toBe(mockElements[0])
 		expect(result2.value).toBe(mockElements)
 		expect(result3.value).toBe(mockInnerText[0])

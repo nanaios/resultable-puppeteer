@@ -10,7 +10,8 @@
 		"test": "test"
 	},
 	"scripts": {
-		"test": "vitest -t only"
+		"test": "vitest -t only",
+		"build": "node esbuild.js"
 	},
 	"devDependencies": {
 		"esbuild": "^0.25.5",

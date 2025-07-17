@@ -1,7 +1,8 @@
 import { fromPromise, type ResultAsync } from "neverthrow";
 import type { ElementHandle, EvaluateFuncWith, NodeFor, Page, QueryOptions } from "puppeteer";
-import { createResultableElementHandle, IResultableElementHandle } from "./ResultableElementHandle";
+import { IResultableElementHandle } from "./ResultableElementHandle";
 import { ThrowError, NotFalsy } from "./utility";
+import { createResultableElementHandle } from "./factory";
 
 export interface I$Base {
 	$<Selector extends string>(selector: Selector): ResultAsync<IResultableElementHandle<NodeFor<Selector>>, Error>
@@ -20,7 +21,7 @@ export interface I$Base {
 }
 
 export class $Base {
-	base: Page | ElementHandle<Node>
+	private base: Page | ElementHandle<Node>
 	constructor(base: Page | ElementHandle<Node>) {
 		this.base = base
 	}

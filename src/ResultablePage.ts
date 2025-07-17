@@ -1,10 +1,8 @@
 import { fromPromise, type ResultAsync } from "neverthrow";
-import type { ElementHandle, EvaluateFuncWith, NodeFor, Page, QueryOptions } from "puppeteer";
+import type { Page } from "puppeteer";
 import type { ClickOptions, KeyboardTypeOptions } from "puppeteer"
-import { NotFalsy, ThrowError } from "./utility";
+import { ThrowError } from "./utility";
 import { $Base, type I$Base } from "./$Base";
-
-export const createResultablePage = (page: Page): IResultablePage => new ResultablePage(page)
 
 export interface IResultablePage extends I$Base {
 	title(): ResultAsync<string, Error>
@@ -15,7 +13,7 @@ export interface IResultablePage extends I$Base {
 	click(selector: string, options?: Readonly<ClickOptions>): ResultAsync<void, Error>
 }
 
-class ResultablePage extends $Base implements IResultablePage {
+export class ResultablePage extends $Base implements IResultablePage {
 	page: Page
 	constructor(page: Page) {
 		super(page)
@@ -32,7 +30,7 @@ class ResultablePage extends $Base implements IResultablePage {
 			this.page.close(options),
 			ThrowError
 		)
-	} t
+	}
 	type(selector: string, text: string, options?: Readonly<KeyboardTypeOptions>) {
 		return fromPromise(
 			this.page.type(selector, text, options),
