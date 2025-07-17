@@ -5,13 +5,11 @@
 	"license": "MIT",
 	"author": "nanaios",
 	"type": "module",
-	"main": "index.js",
-	"directories": {
-		"test": "test"
-	},
+	"main": "./lib/index.js",
+	"types": "./types/index.d.ts",
 	"scripts": {
-		"test": "vitest -t only",
-		"fullTest": "vitest",
+		"test": "vitest run -t only",
+		"fullTest": "vitest run",
 		"build": "npm run fullTest && node esbuild.js",
 		"fullBuild": "npm run build production& tsc -d -p tsconfig.build.json"
 	},
