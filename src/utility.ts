@@ -14,4 +14,4 @@ export const NotFalsy = <T>(value: T | Falsy) => {
 
 export const ThrowError = (e: unknown) => e as Error
 
-export const bindResult = <T, E extends Error>(promise: PromiseLike<T>, errorFn?: (e: unknown) => E = ThrowError): ResultAsync<T, E> => fromPromise(promise, errorFn)
+export const bindResult = <T, E>(promise: PromiseLike<T>) => fromPromise(promise, ThrowError)
