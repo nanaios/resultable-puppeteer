@@ -1,28 +1,24 @@
 import type { ClickOptions, ElementHandle, EvaluateFuncWith, KeyboardTypeOptions } from "puppeteer";
-import { $Base, type I$Base } from "./$Base";
-import { bindResult } from "./utility";
+import { $Base } from "./$Base";
+import { bindResultPromise } from "./utility";
 
-export interface IResultableElementHandle<ElementType extends Element = Element> extends I$Base {
-	element: ElementHandle<ElementType>
-}
-
-export class ResultableElementHandle<ElementType extends Element = Element> extends $Base implements IResultableElementHandle<ElementType> {
+export class ResultableElementHandle<ElementType extends Element = Element> extends $Base {
 	element: ElementHandle<ElementType>
 
 	constructor(elementHandle: ElementHandle<ElementType>) {
 		super(elementHandle)
 		this.element = elementHandle
 
-		elementHandle.evaluate(a => 0)
+		elementHandle
 	}
 	click(options?: Readonly<ClickOptions>) {
-		return bindResult(this.element.click(options))
+		return bindResultPromise(this.element.click(options))
 	}
 	type(text: string, options?: Readonly<KeyboardTypeOptions>) {
-		return bindResult(this.element.type(text, options))
+		return bindResultPromise(this.element.type(text, options))
 	}
 
 	evaluate(pageFunction: string | EvaluateFuncWith<ElementType, []>) {
-		return bindResult(this.element.evaluate(pageFunction))
+		return bindResultPromise(this.element.evaluate(pageFunction))
 	}
 }

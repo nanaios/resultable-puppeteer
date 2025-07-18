@@ -1,4 +1,4 @@
-import { fromPromise, type ResultAsync } from "neverthrow";
+import { fromPromise, fromThrowable } from "neverthrow";
 
 type Falsy = null | undefined | false | 0 | 0n | ""
 
@@ -14,4 +14,5 @@ export const NotFalsy = <T>(value: T | Falsy) => {
 
 export const ThrowError = (e: unknown) => e as Error
 
-export const bindResult = <T, E>(promise: PromiseLike<T>) => fromPromise(promise, ThrowError)
+export const bindResultPromise = <T>(promise: PromiseLike<T>) => fromPromise(promise, ThrowError)
+export const bindResult = <Fn extends (...args: readonly any[]) => any, E>(fn: Fn) => fromThrowable(fn, ThrowError)
