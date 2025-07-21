@@ -1,4 +1,4 @@
-import type { EvaluateFunc, GoToOptions, Page, WaitForOptions } from "puppeteer";
+import { type EvaluateFunc, type GoToOptions, type Page, type WaitForOptions } from "puppeteer";
 import type { ClickOptions, KeyboardTypeOptions } from "puppeteer"
 import { bindResultPromise } from "./utility";
 import { $Base } from "./$Base";

@@ -15,4 +15,4 @@ export const NotFalsy = <T>(value: T | Falsy) => {
 export const ThrowError = (e: unknown) => e as Error
 
 export const bindResultPromise = <T>(promise: PromiseLike<T>) => fromPromise(promise, ThrowError)
-export const bindResult = <Fn extends (...args: readonly any[]) => any, E>(fn: Fn) => fromThrowable(fn, ThrowError)
+export const bindResult = <Fn extends (...args: readonly any[]) => any>(fn: Fn) => fromThrowable(fn, ThrowError)

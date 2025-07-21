@@ -1,13 +1,12 @@
-import type { Browser } from "puppeteer";
+import type { Browser, BrowserEvents } from "puppeteer";
 import { bindResultPromise } from "./utility";
+import { ResultableEventEmitter } from "./ResultableEventEmitter";
 
-export class ResultableBrowser {
+export class ResultableBrowser extends ResultableEventEmitter<BrowserEvents> {
 	private browser: Browser
 	constructor(browser: Browser) {
+		super(browser)
 		this.browser = browser
-
-		browser.close()
-		browser.on
 	}
 
 	close() {

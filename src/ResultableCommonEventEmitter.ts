@@ -1,17 +1,11 @@
-import type { CommonEventEmitter, EventType, Handler } from "puppeteer";
-import { bindResult, bindResultPromise } from "./utility";
+import type { EventType, Handler } from "puppeteer";
+import type { Result } from "neverthrow";
 
-export class ResultableCommonEventEmitter<Events extends Record<EventType, unknown>> {
-	base: CommonEventEmitter<Events>
-	constructor(base: CommonEventEmitter<Events>) {
-		this.base = base
-	}
-	on<Key extends keyof Events>(type: Key, handler: Handler<Events[Key]>) {
-		return bindResult(this.base.on)(type, handler)
-	}
-	off<Key extends keyof Events>(type: Key, handler?: Handler<Events[Key]>) { }
-	emit<Key extends keyof Events>(type: Key, event: Events[Key]) { }
-	once<Key extends keyof Events>(type: Key, handler: Handler<Events[Key]>) { }
-	listenerCount(event: keyof Events) { }
-	removeAllListeners(event?: keyof Events) { }
+export interface ResultableCommonEventEmitter<Events extends Record<EventType, unknown>> {
+	on<Key extends keyof Events>(type: Key, handler: Handler<Events[Key]>): Result<this, Error>
+	off<Key extends keyof Events>(type: Key, handler?: Handler<Events[Key]>): Result<this, Error>
+	emit<Key extends keyof Events>(type: Key, event: Events[Key]): Result<boolean, Error>
+	once<Key extends keyof Events>(type: Key, handler: Handler<Events[Key]>): Result<this, Error>
+	listenerCount(event: keyof Events): Result<number, Error>
+	removeAllListeners(event?: keyof Events): Result<this, Error>
 }
